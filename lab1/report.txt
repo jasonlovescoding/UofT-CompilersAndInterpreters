@@ -1,0 +1,14 @@
+/**********************************************************************
+ *  Name           Student Number
+ *  Yi Qi Cao      999865294
+ *  Qianhao Zhang  1004654377
+ *
+ *  Interface to the scanner module for CSC467 course project
+ **********************************************************************/
+
+To handle out-of-bound integers, we create a buffer, convert yylval (converted from yytext) as a string into that buffer.
+If that buffer and yytext does not match, it indicates the integer is out of bound, and we call yERROR accordingly.
+
+There are no bound for the length of identifiers in the language spec. In terms of C, the bound also varies among different compilers, and there are compilers that support unlimited length. We choose to do the same.
+
+We tested on the .frag file with some modification, such as adding comments, plus/minus sign with float numbers, boolean values into vectors. The tokens are separated correctly.
