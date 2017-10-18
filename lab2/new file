@@ -1,0 +1,9 @@
+We target this phase of lab as to fill in the production rules without ambiguity.
+The first and most prominent ambiguity from the original lab spec lies in <declarations> and <declaration>. 
+The empty production rule for <declaration> is removed to avoid the infinite loop going from producing an empty <declarations> and an empty <declaration> over and over again.
+Then the ambiguity from expression with operators is handled by ordered embedding of different <expression op expression> into the production rule of expression,
+instead of using an intermediate rule for binary_ops. An interesting trick is the use of %prec UMINUS as TA suggested. 
+Another thing to notice is that in the original lab spec there is no support of comma ',' as it should for the language. We added that.
+
+For testing we wrote 
+

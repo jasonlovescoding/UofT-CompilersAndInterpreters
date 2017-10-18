@@ -1,0 +1,2480 @@
+Terminals which are not used
+
+   GET
+   NEWLINE
+   PUT
+   VOID
+   CONST_INT
+   CONST_BOOL
+   TXT_C
+   EXPR
+   OUTPUT
+   INPUT
+   DECLARE
+   DECLARES
+   STATEMENTS
+   STATEMENT
+   VARIABLE
+   SCOPE
+   ASSIGN
+   INTEGER
+   BOOLEAN
+   DEC_SCALAR
+   DEC_ARRAY
+   DEC_CONST
+   DEC_FUNCTION
+   DEC_VOID_FUNCTION
+   FLOAT
+   PARAMETERS
+   PARAM_SCALAR
+   PARAM_ARRAY
+   OUTPUT_NEWLINE
+   FUNC_CALL
+   ARGUMENTS
+   UNARY_MINUS
+   LOGICAL_NOT
+   CMP_EQ
+   CMP_NE
+   CMP_LT
+   CMP_LE
+   CMP_GT
+   CMP_GE
+   IF_STMT
+   IF_ELSE
+   N_BREAK
+   N_RET
+   CONSTRUCTOR_CALL
+   WHILE_LOOP
+   PARENTHESIS
+   VEC2
+   VEC3
+   VEC4
+   IVEC2
+   IVEC3
+   IVEC4
+   BVEC2
+   BVEC3
+   BVEC4
+   MAT2
+   MAT3
+   MAT4
+   CONST_FLOAT
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: scope
+
+    2 scope: '{' declarations statements '}'
+
+    3 declarations: declarations declaration
+    4             | /* empty */
+
+    5 declaration: type ID ';'
+    6            | type ID '=' expression ';'
+    7            | CONST type ID '=' expression ';'
+
+    8 statements: statements statement
+    9           | /* empty */
+
+   10 statement: statement_open
+   11          | statement_closed
+
+   12 statement_open: IF '(' expression ')' statement
+   13               | IF '(' expression ')' statement_closed ELSE statement_open
+   14               | WHILE '(' expression ')' statement_open
+
+   15 statement_closed: variable '=' expression ';'
+   16                 | BREAK ';'
+   17                 | RETURN expression_opt ';'
+   18                 | scope
+   19                 | WHILE '(' expression ')' statement_closed
+   20                 | IF '(' expression ')' statement_closed ELSE statement_closed
+   21                 | ';'
+
+   22 arguments_opt: arguments
+   23              | /* empty */
+
+   24 arguments: arguments ',' argument
+   25          | argument
+
+   26 argument: expression
+
+   27 expression_opt: expression
+   28               | /* empty */
+
+   29 expression: INT_C
+   30           | FLOAT_C
+   31           | '-' expression
+   32           | expression '+' expression
+   33           | expression '-' expression
+   34           | expression '*' expression
+   35           | expression '/' expression
+   36           | expression '^' expression
+   37           | TRUE_T
+   38           | FALSE_T
+   39           | '!' expression
+   40           | expression '&' expression
+   41           | expression '|' expression
+   42           | expression '=' expression
+   43           | expression NEQ expression
+   44           | expression '<' expression
+   45           | expression LEQ expression
+   46           | expression '>' expression
+   47           | expression GEQ expression
+   48           | '(' expression ')'
+   49           | variable
+   50           | constructor_call
+
+   51 variable: ID
+   52         | ID '[' expression ']'
+
+   53 constructor_call: type '(' arguments_opt ')'
+
+   54 type: INTEGER_T
+   55     | BOOLEAN_T
+   56     | FLOAT_T
+   57     | VEC2_T
+   58     | VEC3_T
+   59     | VEC4_T
+   60     | IVEC2_T
+   61     | IVEC3_T
+   62     | IVEC4_T
+   63     | BVEC2_T
+   64     | BVEC3_T
+   65     | BVEC4_T
+   66     | MAT2_T
+   67     | MAT3_T
+   68     | MAT4_T
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 39
+'&' (38) 40
+'(' (40) 12 13 14 19 20 48 53
+')' (41) 12 13 14 19 20 48 53
+'*' (42) 34
+'+' (43) 32
+',' (44) 24
+'-' (45) 31 33
+'/' (47) 35
+';' (59) 5 6 7 15 16 17 21
+'<' (60) 44
+'=' (61) 6 7 15 42
+'>' (62) 46
+'[' (91) 52
+']' (93) 52
+'^' (94) 36
+'{' (123) 2
+'|' (124) 41
+'}' (125) 2
+error (256)
+BOOLEAN_T (258) 55
+BREAK (259) 16
+CONST (260) 7
+ELSE (261) 13 20
+FALSE_T (262) 38
+FLOAT_T (263) 56
+GEQ (264) 47
+GET (265)
+IF (266) 12 13 20
+INTEGER_T (267) 54
+LEQ (268) 45
+NEQ (269) 43
+NEWLINE (270)
+PUT (271)
+RETURN (272) 17
+TRUE_T (273) 37
+VOID (274)
+WHILE (275) 14 19
+CONST_INT (276)
+CONST_BOOL (277)
+INT_C (278) 29
+FLOAT_C (279) 30
+TXT_C (280)
+ID (281) 5 6 7 51 52
+VEC2_T (282) 57
+VEC3_T (283) 58
+VEC4_T (284) 59
+IVEC2_T (285) 60
+IVEC3_T (286) 61
+IVEC4_T (287) 62
+BVEC2_T (288) 63
+BVEC3_T (289) 64
+BVEC4_T (290) 65
+MAT2_T (291) 66
+MAT3_T (292) 67
+MAT4_T (293) 68
+EXPR (294)
+OUTPUT (295)
+INPUT (296)
+DECLARE (297)
+DECLARES (298)
+STATEMENTS (299)
+STATEMENT (300)
+VARIABLE (301)
+SCOPE (302)
+ASSIGN (303)
+INTEGER (304)
+BOOLEAN (305)
+DEC_SCALAR (306)
+DEC_ARRAY (307)
+DEC_CONST (308)
+DEC_FUNCTION (309)
+DEC_VOID_FUNCTION (310)
+FLOAT (311)
+PARAMETERS (312)
+PARAM_SCALAR (313)
+PARAM_ARRAY (314)
+OUTPUT_NEWLINE (315)
+FUNC_CALL (316)
+ARGUMENTS (317)
+UNARY_MINUS (318)
+LOGICAL_NOT (319)
+CMP_EQ (320)
+CMP_NE (321)
+CMP_LT (322)
+CMP_LE (323)
+CMP_GT (324)
+CMP_GE (325)
+IF_STMT (326)
+IF_ELSE (327)
+N_BREAK (328)
+N_RET (329)
+CONSTRUCTOR_CALL (330)
+WHILE_LOOP (331)
+PARENTHESIS (332)
+VEC2 (333)
+VEC3 (334)
+VEC4 (335)
+IVEC2 (336)
+IVEC3 (337)
+IVEC4 (338)
+BVEC2 (339)
+BVEC3 (340)
+BVEC4 (341)
+MAT2 (342)
+MAT3 (343)
+MAT4 (344)
+CONST_FLOAT (345)
+UMINUS (346)
+
+
+Nonterminals, with rules where they appear
+
+$accept (111)
+    on left: 0
+program (112)
+    on left: 1, on right: 0
+scope (113)
+    on left: 2, on right: 1 18
+declarations (114)
+    on left: 3 4, on right: 2 3
+declaration (115)
+    on left: 5 6 7, on right: 3
+statements (116)
+    on left: 8 9, on right: 2 8
+statement (117)
+    on left: 10 11, on right: 8 12
+statement_open (118)
+    on left: 12 13 14, on right: 10 13 14
+statement_closed (119)
+    on left: 15 16 17 18 19 20 21, on right: 11 13 19 20
+arguments_opt (120)
+    on left: 22 23, on right: 53
+arguments (121)
+    on left: 24 25, on right: 22 24
+argument (122)
+    on left: 26, on right: 24 25
+expression_opt (123)
+    on left: 27 28, on right: 17
+expression (124)
+    on left: 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46
+    47 48 49 50, on right: 6 7 12 13 14 15 19 20 26 27 31 32 33 34
+    35 36 39 40 41 42 43 44 45 46 47 48 52
+variable (125)
+    on left: 51 52, on right: 15 49
+constructor_call (126)
+    on left: 53, on right: 50
+type (127)
+    on left: 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68,
+    on right: 5 6 7 53
+
+
+state 0
+
+    0 $accept: . program $end
+
+    '{'  shift, and go to state 1
+
+    program  go to state 2
+    scope    go to state 3
+
+
+state 1
+
+    2 scope: '{' . declarations statements '}'
+
+    $default  reduce using rule 4 (declarations)
+
+    declarations  go to state 4
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 5
+
+
+state 3
+
+    1 program: scope .
+
+    $default  reduce using rule 1 (program)
+
+
+state 4
+
+    2 scope: '{' declarations . statements '}'
+    3 declarations: declarations . declaration
+
+    BOOLEAN_T  shift, and go to state 6
+    CONST      shift, and go to state 7
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+
+    $default  reduce using rule 9 (statements)
+
+    declaration  go to state 22
+    statements   go to state 23
+    type         go to state 24
+
+
+state 5
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 6
+
+   55 type: BOOLEAN_T .
+
+    $default  reduce using rule 55 (type)
+
+
+state 7
+
+    7 declaration: CONST . type ID '=' expression ';'
+
+    BOOLEAN_T  shift, and go to state 6
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+
+    type  go to state 25
+
+
+state 8
+
+   56 type: FLOAT_T .
+
+    $default  reduce using rule 56 (type)
+
+
+state 9
+
+   54 type: INTEGER_T .
+
+    $default  reduce using rule 54 (type)
+
+
+state 10
+
+   57 type: VEC2_T .
+
+    $default  reduce using rule 57 (type)
+
+
+state 11
+
+   58 type: VEC3_T .
+
+    $default  reduce using rule 58 (type)
+
+
+state 12
+
+   59 type: VEC4_T .
+
+    $default  reduce using rule 59 (type)
+
+
+state 13
+
+   60 type: IVEC2_T .
+
+    $default  reduce using rule 60 (type)
+
+
+state 14
+
+   61 type: IVEC3_T .
+
+    $default  reduce using rule 61 (type)
+
+
+state 15
+
+   62 type: IVEC4_T .
+
+    $default  reduce using rule 62 (type)
+
+
+state 16
+
+   63 type: BVEC2_T .
+
+    $default  reduce using rule 63 (type)
+
+
+state 17
+
+   64 type: BVEC3_T .
+
+    $default  reduce using rule 64 (type)
+
+
+state 18
+
+   65 type: BVEC4_T .
+
+    $default  reduce using rule 65 (type)
+
+
+state 19
+
+   66 type: MAT2_T .
+
+    $default  reduce using rule 66 (type)
+
+
+state 20
+
+   67 type: MAT3_T .
+
+    $default  reduce using rule 67 (type)
+
+
+state 21
+
+   68 type: MAT4_T .
+
+    $default  reduce using rule 68 (type)
+
+
+state 22
+
+    3 declarations: declarations declaration .
+
+    $default  reduce using rule 3 (declarations)
+
+
+state 23
+
+    2 scope: '{' declarations statements . '}'
+    8 statements: statements . statement
+
+    BREAK   shift, and go to state 26
+    IF      shift, and go to state 27
+    RETURN  shift, and go to state 28
+    WHILE   shift, and go to state 29
+    ID      shift, and go to state 30
+    '{'     shift, and go to state 1
+    '}'     shift, and go to state 31
+    ';'     shift, and go to state 32
+
+    scope             go to state 33
+    statement         go to state 34
+    statement_open    go to state 35
+    statement_closed  go to state 36
+    variable          go to state 37
+
+
+state 24
+
+    5 declaration: type . ID ';'
+    6            | type . ID '=' expression ';'
+
+    ID  shift, and go to state 38
+
+
+state 25
+
+    7 declaration: CONST type . ID '=' expression ';'
+
+    ID  shift, and go to state 39
+
+
+state 26
+
+   16 statement_closed: BREAK . ';'
+
+    ';'  shift, and go to state 40
+
+
+state 27
+
+   12 statement_open: IF . '(' expression ')' statement
+   13               | IF . '(' expression ')' statement_closed ELSE statement_open
+   20 statement_closed: IF . '(' expression ')' statement_closed ELSE statement_closed
+
+    '('  shift, and go to state 41
+
+
+state 28
+
+   17 statement_closed: RETURN . expression_opt ';'
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    $default  reduce using rule 28 (expression_opt)
+
+    expression_opt    go to state 49
+    expression        go to state 50
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 29
+
+   14 statement_open: WHILE . '(' expression ')' statement_open
+   19 statement_closed: WHILE . '(' expression ')' statement_closed
+
+    '('  shift, and go to state 54
+
+
+state 30
+
+   51 variable: ID .
+   52         | ID . '[' expression ']'
+
+    '['  shift, and go to state 55
+
+    $default  reduce using rule 51 (variable)
+
+
+state 31
+
+    2 scope: '{' declarations statements '}' .
+
+    $default  reduce using rule 2 (scope)
+
+
+state 32
+
+   21 statement_closed: ';' .
+
+    $default  reduce using rule 21 (statement_closed)
+
+
+state 33
+
+   18 statement_closed: scope .
+
+    $default  reduce using rule 18 (statement_closed)
+
+
+state 34
+
+    8 statements: statements statement .
+
+    $default  reduce using rule 8 (statements)
+
+
+state 35
+
+   10 statement: statement_open .
+
+    $default  reduce using rule 10 (statement)
+
+
+state 36
+
+   11 statement: statement_closed .
+
+    $default  reduce using rule 11 (statement)
+
+
+state 37
+
+   15 statement_closed: variable . '=' expression ';'
+
+    '='  shift, and go to state 56
+
+
+state 38
+
+    5 declaration: type ID . ';'
+    6            | type ID . '=' expression ';'
+
+    '='  shift, and go to state 57
+    ';'  shift, and go to state 58
+
+
+state 39
+
+    7 declaration: CONST type ID . '=' expression ';'
+
+    '='  shift, and go to state 59
+
+
+state 40
+
+   16 statement_closed: BREAK ';' .
+
+    $default  reduce using rule 16 (statement_closed)
+
+
+state 41
+
+   12 statement_open: IF '(' . expression ')' statement
+   13               | IF '(' . expression ')' statement_closed ELSE statement_open
+   20 statement_closed: IF '(' . expression ')' statement_closed ELSE statement_closed
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 60
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 42
+
+   38 expression: FALSE_T .
+
+    $default  reduce using rule 38 (expression)
+
+
+state 43
+
+   37 expression: TRUE_T .
+
+    $default  reduce using rule 37 (expression)
+
+
+state 44
+
+   29 expression: INT_C .
+
+    $default  reduce using rule 29 (expression)
+
+
+state 45
+
+   30 expression: FLOAT_C .
+
+    $default  reduce using rule 30 (expression)
+
+
+state 46
+
+   31 expression: '-' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 61
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 47
+
+   39 expression: '!' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 62
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 48
+
+   48 expression: '(' . expression ')'
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 63
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 49
+
+   17 statement_closed: RETURN expression_opt . ';'
+
+    ';'  shift, and go to state 64
+
+
+state 50
+
+   27 expression_opt: expression .
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '|'  shift, and go to state 68
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    $default  reduce using rule 27 (expression_opt)
+
+
+state 51
+
+   49 expression: variable .
+
+    $default  reduce using rule 49 (expression)
+
+
+state 52
+
+   50 expression: constructor_call .
+
+    $default  reduce using rule 50 (expression)
+
+
+state 53
+
+   53 constructor_call: type . '(' arguments_opt ')'
+
+    '('  shift, and go to state 78
+
+
+state 54
+
+   14 statement_open: WHILE '(' . expression ')' statement_open
+   19 statement_closed: WHILE '(' . expression ')' statement_closed
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 79
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 55
+
+   52 variable: ID '[' . expression ']'
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 80
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 56
+
+   15 statement_closed: variable '=' . expression ';'
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 81
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 57
+
+    6 declaration: type ID '=' . expression ';'
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 82
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 58
+
+    5 declaration: type ID ';' .
+
+    $default  reduce using rule 5 (declaration)
+
+
+state 59
+
+    7 declaration: CONST type ID '=' . expression ';'
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 83
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 60
+
+   12 statement_open: IF '(' expression . ')' statement
+   13               | IF '(' expression . ')' statement_closed ELSE statement_open
+   20 statement_closed: IF '(' expression . ')' statement_closed ELSE statement_closed
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '|'  shift, and go to state 68
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+    ')'  shift, and go to state 84
+
+
+state 61
+
+   31 expression: '-' expression .
+   32           | expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    $default  reduce using rule 31 (expression)
+
+
+state 62
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   39           | '!' expression .
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    $default  reduce using rule 39 (expression)
+
+
+state 63
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+   48           | '(' expression . ')'
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '|'  shift, and go to state 68
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+    ')'  shift, and go to state 85
+
+
+state 64
+
+   17 statement_closed: RETURN expression_opt ';' .
+
+    $default  reduce using rule 17 (statement_closed)
+
+
+state 65
+
+   47 expression: expression GEQ . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 86
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 66
+
+   45 expression: expression LEQ . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 87
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 67
+
+   43 expression: expression NEQ . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 88
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 68
+
+   41 expression: expression '|' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 89
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 69
+
+   40 expression: expression '&' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 90
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 70
+
+   42 expression: expression '=' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 91
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 71
+
+   44 expression: expression '<' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 92
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 72
+
+   46 expression: expression '>' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 93
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 73
+
+   32 expression: expression '+' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 94
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 74
+
+   33 expression: expression '-' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 95
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 75
+
+   34 expression: expression '*' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 96
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 76
+
+   35 expression: expression '/' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 97
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 77
+
+   36 expression: expression '^' . expression
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    expression        go to state 98
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 78
+
+   53 constructor_call: type '(' . arguments_opt ')'
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    $default  reduce using rule 23 (arguments_opt)
+
+    arguments_opt     go to state 99
+    arguments         go to state 100
+    argument          go to state 101
+    expression        go to state 102
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 79
+
+   14 statement_open: WHILE '(' expression . ')' statement_open
+   19 statement_closed: WHILE '(' expression . ')' statement_closed
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '|'  shift, and go to state 68
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+    ')'  shift, and go to state 103
+
+
+state 80
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+   52 variable: ID '[' expression . ']'
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '|'  shift, and go to state 68
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+    ']'  shift, and go to state 104
+
+
+state 81
+
+   15 statement_closed: variable '=' expression . ';'
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '|'  shift, and go to state 68
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+    ';'  shift, and go to state 105
+
+
+state 82
+
+    6 declaration: type ID '=' expression . ';'
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '|'  shift, and go to state 68
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+    ';'  shift, and go to state 106
+
+
+state 83
+
+    7 declaration: CONST type ID '=' expression . ';'
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '|'  shift, and go to state 68
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+    ';'  shift, and go to state 107
+
+
+state 84
+
+   12 statement_open: IF '(' expression ')' . statement
+   13               | IF '(' expression ')' . statement_closed ELSE statement_open
+   20 statement_closed: IF '(' expression ')' . statement_closed ELSE statement_closed
+
+    BREAK   shift, and go to state 26
+    IF      shift, and go to state 27
+    RETURN  shift, and go to state 28
+    WHILE   shift, and go to state 29
+    ID      shift, and go to state 30
+    '{'     shift, and go to state 1
+    ';'     shift, and go to state 32
+
+    scope             go to state 33
+    statement         go to state 108
+    statement_open    go to state 35
+    statement_closed  go to state 109
+    variable          go to state 37
+
+
+state 85
+
+   48 expression: '(' expression ')' .
+
+    $default  reduce using rule 48 (expression)
+
+
+state 86
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+   47           | expression GEQ expression .
+
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    GEQ  error (nonassociative)
+    LEQ  error (nonassociative)
+    NEQ  error (nonassociative)
+    '='  error (nonassociative)
+    '<'  error (nonassociative)
+    '>'  error (nonassociative)
+
+    $default  reduce using rule 47 (expression)
+
+
+state 87
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   45           | expression LEQ expression .
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    GEQ  error (nonassociative)
+    LEQ  error (nonassociative)
+    NEQ  error (nonassociative)
+    '='  error (nonassociative)
+    '<'  error (nonassociative)
+    '>'  error (nonassociative)
+
+    $default  reduce using rule 45 (expression)
+
+
+state 88
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   43           | expression NEQ expression .
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    GEQ  error (nonassociative)
+    LEQ  error (nonassociative)
+    NEQ  error (nonassociative)
+    '='  error (nonassociative)
+    '<'  error (nonassociative)
+    '>'  error (nonassociative)
+
+    $default  reduce using rule 43 (expression)
+
+
+state 89
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   41           | expression '|' expression .
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    $default  reduce using rule 41 (expression)
+
+
+state 90
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   40           | expression '&' expression .
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    $default  reduce using rule 40 (expression)
+
+
+state 91
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   42           | expression '=' expression .
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    GEQ  error (nonassociative)
+    LEQ  error (nonassociative)
+    NEQ  error (nonassociative)
+    '='  error (nonassociative)
+    '<'  error (nonassociative)
+    '>'  error (nonassociative)
+
+    $default  reduce using rule 42 (expression)
+
+
+state 92
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   44           | expression '<' expression .
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    GEQ  error (nonassociative)
+    LEQ  error (nonassociative)
+    NEQ  error (nonassociative)
+    '='  error (nonassociative)
+    '<'  error (nonassociative)
+    '>'  error (nonassociative)
+
+    $default  reduce using rule 44 (expression)
+
+
+state 93
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   46           | expression '>' expression .
+   47           | expression . GEQ expression
+
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    GEQ  error (nonassociative)
+    LEQ  error (nonassociative)
+    NEQ  error (nonassociative)
+    '='  error (nonassociative)
+    '<'  error (nonassociative)
+    '>'  error (nonassociative)
+
+    $default  reduce using rule 46 (expression)
+
+
+state 94
+
+   32 expression: expression . '+' expression
+   32           | expression '+' expression .
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    $default  reduce using rule 32 (expression)
+
+
+state 95
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   33           | expression '-' expression .
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    $default  reduce using rule 33 (expression)
+
+
+state 96
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   34           | expression '*' expression .
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    '^'  shift, and go to state 77
+
+    $default  reduce using rule 34 (expression)
+
+
+state 97
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   35           | expression '/' expression .
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    '^'  shift, and go to state 77
+
+    $default  reduce using rule 35 (expression)
+
+
+state 98
+
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   36           | expression '^' expression .
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    '^'  shift, and go to state 77
+
+    $default  reduce using rule 36 (expression)
+
+
+state 99
+
+   53 constructor_call: type '(' arguments_opt . ')'
+
+    ')'  shift, and go to state 110
+
+
+state 100
+
+   22 arguments_opt: arguments .
+   24 arguments: arguments . ',' argument
+
+    ','  shift, and go to state 111
+
+    $default  reduce using rule 22 (arguments_opt)
+
+
+state 101
+
+   25 arguments: argument .
+
+    $default  reduce using rule 25 (arguments)
+
+
+state 102
+
+   26 argument: expression .
+   32 expression: expression . '+' expression
+   33           | expression . '-' expression
+   34           | expression . '*' expression
+   35           | expression . '/' expression
+   36           | expression . '^' expression
+   40           | expression . '&' expression
+   41           | expression . '|' expression
+   42           | expression . '=' expression
+   43           | expression . NEQ expression
+   44           | expression . '<' expression
+   45           | expression . LEQ expression
+   46           | expression . '>' expression
+   47           | expression . GEQ expression
+
+    GEQ  shift, and go to state 65
+    LEQ  shift, and go to state 66
+    NEQ  shift, and go to state 67
+    '|'  shift, and go to state 68
+    '&'  shift, and go to state 69
+    '='  shift, and go to state 70
+    '<'  shift, and go to state 71
+    '>'  shift, and go to state 72
+    '+'  shift, and go to state 73
+    '-'  shift, and go to state 74
+    '*'  shift, and go to state 75
+    '/'  shift, and go to state 76
+    '^'  shift, and go to state 77
+
+    $default  reduce using rule 26 (argument)
+
+
+state 103
+
+   14 statement_open: WHILE '(' expression ')' . statement_open
+   19 statement_closed: WHILE '(' expression ')' . statement_closed
+
+    BREAK   shift, and go to state 26
+    IF      shift, and go to state 27
+    RETURN  shift, and go to state 28
+    WHILE   shift, and go to state 29
+    ID      shift, and go to state 30
+    '{'     shift, and go to state 1
+    ';'     shift, and go to state 32
+
+    scope             go to state 33
+    statement_open    go to state 112
+    statement_closed  go to state 113
+    variable          go to state 37
+
+
+state 104
+
+   52 variable: ID '[' expression ']' .
+
+    $default  reduce using rule 52 (variable)
+
+
+state 105
+
+   15 statement_closed: variable '=' expression ';' .
+
+    $default  reduce using rule 15 (statement_closed)
+
+
+state 106
+
+    6 declaration: type ID '=' expression ';' .
+
+    $default  reduce using rule 6 (declaration)
+
+
+state 107
+
+    7 declaration: CONST type ID '=' expression ';' .
+
+    $default  reduce using rule 7 (declaration)
+
+
+state 108
+
+   12 statement_open: IF '(' expression ')' statement .
+
+    $default  reduce using rule 12 (statement_open)
+
+
+state 109
+
+   11 statement: statement_closed .
+   13 statement_open: IF '(' expression ')' statement_closed . ELSE statement_open
+   20 statement_closed: IF '(' expression ')' statement_closed . ELSE statement_closed
+
+    ELSE  shift, and go to state 114
+
+    $default  reduce using rule 11 (statement)
+
+
+state 110
+
+   53 constructor_call: type '(' arguments_opt ')' .
+
+    $default  reduce using rule 53 (constructor_call)
+
+
+state 111
+
+   24 arguments: arguments ',' . argument
+
+    BOOLEAN_T  shift, and go to state 6
+    FALSE_T    shift, and go to state 42
+    FLOAT_T    shift, and go to state 8
+    INTEGER_T  shift, and go to state 9
+    TRUE_T     shift, and go to state 43
+    INT_C      shift, and go to state 44
+    FLOAT_C    shift, and go to state 45
+    ID         shift, and go to state 30
+    VEC2_T     shift, and go to state 10
+    VEC3_T     shift, and go to state 11
+    VEC4_T     shift, and go to state 12
+    IVEC2_T    shift, and go to state 13
+    IVEC3_T    shift, and go to state 14
+    IVEC4_T    shift, and go to state 15
+    BVEC2_T    shift, and go to state 16
+    BVEC3_T    shift, and go to state 17
+    BVEC4_T    shift, and go to state 18
+    MAT2_T     shift, and go to state 19
+    MAT3_T     shift, and go to state 20
+    MAT4_T     shift, and go to state 21
+    '-'        shift, and go to state 46
+    '!'        shift, and go to state 47
+    '('        shift, and go to state 48
+
+    argument          go to state 115
+    expression        go to state 102
+    variable          go to state 51
+    constructor_call  go to state 52
+    type              go to state 53
+
+
+state 112
+
+   14 statement_open: WHILE '(' expression ')' statement_open .
+
+    $default  reduce using rule 14 (statement_open)
+
+
+state 113
+
+   19 statement_closed: WHILE '(' expression ')' statement_closed .
+
+    $default  reduce using rule 19 (statement_closed)
+
+
+state 114
+
+   13 statement_open: IF '(' expression ')' statement_closed ELSE . statement_open
+   20 statement_closed: IF '(' expression ')' statement_closed ELSE . statement_closed
+
+    BREAK   shift, and go to state 26
+    IF      shift, and go to state 27
+    RETURN  shift, and go to state 28
+    WHILE   shift, and go to state 29
+    ID      shift, and go to state 30
+    '{'     shift, and go to state 1
+    ';'     shift, and go to state 32
+
+    scope             go to state 33
+    statement_open    go to state 116
+    statement_closed  go to state 117
+    variable          go to state 37
+
+
+state 115
+
+   24 arguments: arguments ',' argument .
+
+    $default  reduce using rule 24 (arguments)
+
+
+state 116
+
+   13 statement_open: IF '(' expression ')' statement_closed ELSE statement_open .
+
+    $default  reduce using rule 13 (statement_open)
+
+
+state 117
+
+   20 statement_closed: IF '(' expression ')' statement_closed ELSE statement_closed .
+
+    $default  reduce using rule 20 (statement_closed)

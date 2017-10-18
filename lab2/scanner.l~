@@ -1,0 +1,173 @@
+%{
+/**********************************************************************
+ *
+ * **YOUR GROUP INFO SHOULD GO HERE**
+ *
+ *  Interface to the scanner module for CSC467 course project
+ **********************************************************************/
+
+
+#include "common.h"
+#include "parser.tab.h"
+#include "string.h"
+
+
+#define YY_USER_INIT { yyin = inputFile; }
+#define	yyinput      input
+#define yTRACE(x)    { if (traceScanner) fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); }
+#define yERROR(x)    { fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: %s\n", yyline, x); errorOccurred = TRUE; yyterminate(); }
+
+int CheckInt(void);
+int yyline = 1;
+
+%}
+%option noyywrap
+
+WS          [ \t]
+Digit       [0-9]
+Id          [A-Za-z_][A-Za-z0-9_]*
+Qstring     \"(\"\"|[^\"\n])*[\"\n]
+%%
+"/*"        {
+              int c1      = 0;
+              int c2      = yyinput();
+              int curline = yyline;
+              for(;;) {
+                if (c2 == EOF) {
+                  fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: Unmatched /*\n", curline);
+                  errorOccurred = TRUE;
+                  yyterminate();
+                }
+                if (c1 == '*' && c2 == '/')
+                  break;
+                c1 = c2;
+                c2 = yyinput();
+                if (c1 == '\n' && c2 != EOF)
+                  yyline++;
+              }
+            }
+"*/"        { yERROR("Unmatched */");               }
+{WS}        { /* Eat whitespace */                  }
+\n          { yyline++;                             }
+<<EOF>>     { yyterminate();                        }
+
+[+\-*/^]    { yTRACE(yytext[0]); return(yytext[0]); }
+[!&|=<>]    { yTRACE(yytext[0]); return(yytext[0]); }
+[,;()[\]{}] { yTRACE(yytext[0]); return(yytext[0]); }
+
+"&&"        { yTRACE(AND);       return(AND);       }
+"||"        { yTRACE(OR);       return(OR);       }
+"!="        { yTRACE(NEQ);       return(NEQ);       }
+"<="        { yTRACE(LEQ);       return(LEQ);       }
+">="        { yTRACE(GEQ);       return(GEQ);       }
+"=="        { yTRACE(GEQ);       return(EQ);       }
+bool        { yTRACE(BOOLEAN_T); return(BOOLEAN_T); }
+const       { yTRACE(CONST);     return(CONST); }
+else        { yTRACE(ELSE);      return(ELSE);      }
+false       { yTRACE(FALSE_T);   return(FALSE_T);   }
+if          { yTRACE(IF);        return(IF);        }
+int         { yTRACE(INTEGER_T); return(INTEGER_T); }
+true       { yTRACE(TRUE_T);    return(TRUE_T);    }
+while       { yTRACE(WHILE);     return(WHILE);     }
+int         { yTRACE(FLOAT_T); return(FLOAT_T); }
+vec2      { yTRACE(VEC2_T);     return(VEC2_T);   }
+vec3      { yTRACE(VEC3_T);     return(VEC3_T);   }
+vec4      { yTRACE(VEC4_T);     return(VEC4_T);   }
+ivec2     { yTRACE(IVEC2_T);     return(IVEC2_T); }
+ivec3     { yTRACE(IVEC3_T);     return(IVEC3_T); }
+ivec4     { yTRACE(IVEC4_T);     return(IVEC4_T); }
+bvec2     { yTRACE(BVEC2_T);     return(BVEC2_T); }
+bvec3     { yTRACE(BVEC3_T);     return(BVEC3_T); }
+bvec4     { yTRACE(BVEC4_T);     return(BVEC4_T); }
+mat2      { yTRACE(MAT2_T);     return(MAT2_T);   }
+mat3      { yTRACE(MAT3_T);     return(MAT3_T);   }
+mat4      { yTRACE(MAT4_T);     return(MAT4_T);   }
+dp3      { yTRACE(DP3_F);     return(DP3_F);   }
+rsq      { yTRACE(RSQ_F);     return(RSQ_F);   }
+lit      { yTRACE(LIT_F);     return(LIT_F);   }
+
+
+
+
+{Digit}+"."{Digit}*  {
+             // if (!CheckInt()) {
+              //  yERROR("Integer constant out of bounds");
+            //  } else {
+                yTRACE(FLOAT_C);
+                /* Phase 3: Save value in appropriate field of yylval */
+				yylval.fNum = atof( yytext );
+                return(FLOAT_C);
+             // }
+            }
+
+{Digit}+    {
+              if (!CheckInt()) {
+                yERROR("Integer constant out of bounds");
+              } else {
+                yTRACE(INT_C);
+                /* Phase 3: Save value in appropriate field of yylval */
+				yylval.num = atoi( yytext );
+                return(INT_C);
+              }
+            }
+{Qstring}   {
+              /* yyleCheckIntng is the length of the string, plus the starting & ending quotes */
+              int len = yyleng-2;
+              int i, j, escapedQuotes = 0;
+              for (i=1; i<yyleng-1; i++)
+                if (yytext[i] == '"') {
+                  len--;
+                  i++;
+                }
+              len++; /* Terminal null */
+              if (yytext[yyleng-1] != '"') {
+                yERROR("Unterminated text string");
+              } else if (len > MAX_TEXT) {
+                yERROR("Text string too long");
+              } else {
+                yTRACE(TXT_C);
+                /* Phase 3: strip quotation marks etc. and copy to permanent
+                 * location; save address of this location in appropriate field
+                 * of yylval */
+
+				// Count the number of embedded quotes
+				for( i = 1; i < yyleng - 1; i++ )
+					if( yytext[i] == '"' ) escapedQuotes++;
+				escapedQuotes = escapedQuotes << 1;
+
+				// Allocate enough space for the fixed version of the string
+				char * string = (char *)malloc( yyleng - 1 - escapedQuotes );
+				for( i = 1, j = 0; i < yyleng - 1; i++, j++ )
+				{
+					string[j] = yytext[i];
+					if( yytext[i] == '"' ) i++;
+				}
+				string[j] = '\0';
+
+				yylval.str = string;
+                return(TXT_C);
+              }
+            }
+{Id}        {
+              if (yyleng > MAX_IDENTIFIER) {
+                yERROR("Identifier too long");
+              } else {
+                yTRACE(ID);
+                /* Phase 3: copy string into permanent location; save address
+                 * of this location in appropriate field of yylval */
+				char* name = (char *)malloc( yyleng + 1 );
+				strncpy( name, yytext, yyleng );
+				name[yyleng] = '\0';
+				yylval.str = name;
+                return(ID);
+              }
+            }
+.           { yERROR("Unknown token"); }
+
+%%
+
+int CheckInt(void) {
+  return true;
+}
+
+
