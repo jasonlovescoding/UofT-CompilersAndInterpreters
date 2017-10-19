@@ -93,6 +93,9 @@ enum {
 %right    '^'
 %nonassoc '!' UMINUS
 
+%nonassoc IFX
+%nonassoc ELSE
+
 %%
 
 /***********************************************************************
@@ -128,15 +131,11 @@ statements
 
 statement
   : variable '=' expression ';'                    { yTRACE("statement -> variable = expression ;"); }
-  | IF '(' expression ')' statement else_statement { yTRACE("statement -> IF ( expression ) statement else_statement"); }
+  | IF '(' expression ')' statement %prec IFX      { yTRACE("statement -> IF ( expression ) statement"); }
+  | IF '(' expression ')' statement ELSE statement { yTRACE("statement -> IF ( expression ) statement ELSE statement"); }
   | WHILE '(' expression ')' statement             { yTRACE("statement -> WHILE ( expression ) statement"); }
   | scope                                          { yTRACE("statement -> scope"); }
   | ';'                                            { yTRACE("statement -> ;"); }
-  ;
-
-else_statement
-  : ELSE statement { yTRACE("else_statement -> ELSE statement"); }
-  |                { yTRACE("else_statement -> e"); }
   ;
 
 type
