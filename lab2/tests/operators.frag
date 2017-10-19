@@ -30,5 +30,8 @@
 
     /* Precedence 0 vs 1 */
     d = -a[1];
+	
+	/* Precedence operation v.s. parenthesis */
+	d = a ^ (c - b);
+	d = a ^ c - b;
 }
-
