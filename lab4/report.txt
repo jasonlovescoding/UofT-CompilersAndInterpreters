@@ -1,0 +1,49 @@
+Yi Qi Cao      999865294
+Zhang Qianhao  1004654377
+
+1. operations & boolean types
+For arithmetic operations, we use
+ADD for +, SUB for -, MUL for *, RCP for /
+for UMINUS we use SUB from 0, for ^ we use POW
+
+For boolean operations, we use 1 for true, 0 for false. We use:
+ADD for A AND B, and then SGE 2 (if both is 1, it is 2 and set true)
+ADD for A OR B, and then SGE 1 (if either is 1, it is >=1 and set true)
+SLT 1 for NOT A (if it is 1 it is set true, otherwise false)
+MIN(A,B) SGE MAX(A,B) for A==B (if min >= max then A==B)
+MIN(A,B) SLE MAX(A,B) for A==B (if min < max then A!=B)
+A SGE B for A>=B , B<=A
+B SGE A for A<=B , B>=A
+A SLT B for A<B , B>A
+B SLT A for A>B , B<A
+
+2. if-else
+Our strategy with implementing if statements involves condition variables and the CMP instruction. 
+The general idea is that you can execute any code inside an if statement as long as the results only get propagate if the condition evaluates to true. 
+The if condition is first evaluated and the result stored in a temporary variable with the values inverted: -1 is true and 0 is false. 
+Inside the if body, code is processed as normal except for assignments; these are the only statements/expressions that can propagate results. 
+Instead of directly assigning variables the result of the expression on the right hand side, a CMP instruction is used to check the previously stored if condition. 
+If the condition is -1 (true), then the variable being assigned is set to the result of the expression. Otherwise, the variable is set to the same value as before. 
+This way, assignments inside an if body with a false condition will not propagate values. 
+This effectively means that if bodies with false conditions have no effects since they do not store any results. 
+Else bodies are handled the same way, but with the if condition reversed. Nested ifs are also handled the same way, but with the if condition ANDed with the if condition of the scope directly containing it.
+
+3. constants
+As suggested from the arb spec, we declare and store them in PARAM. 
+One thing to notice is that for constant constructors, its argument can be a unary expression with a literal instead of merely a literal.
+We included that case to support that. Since the semantic checker already guarantees the unary operator matches the operand, we can know what value to use directly from the type
+of the literal following the unary operator.
+
+4. code generation
+For scope, we recursively call genCode to its declarations and statements.
+For unary/binary expression our strategy for expressions are post-order traversal since expressions can involve variables that are declared before. 
+We would call upon its expression first and then do the computation based its operator.
+For constructor/function call we also deal with its arguments first, 
+and make sure we get the identifier of its registers (we added an attribute temp for ast nodes to indicate its temp register index).
+Then based on the construction type / function type, we store the result in the correponding temp register.
+Is is to be noticed that there can be nested declaration along with nested scopes, and our naming for the temp registers should allow the overlapping of declared names.
+We use recursion depth (with respect to the scope) to indicate that. If a name is used in a scope (we reused the lookup of symbol table to do that),
+we would rename the register according to its recursion depth. 
+And when looking up a variable, we would rename it to the depth of the neareat ascedant table (including itself). 
+This way we can match it with the latest declaration of it.
+We've tested the compiled file of the two demo cases, and the output matches our expectation.

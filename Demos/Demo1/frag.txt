@@ -1,0 +1,36 @@
+!!ARBfp1.0
+TEMP temp;
+TEMP tempVar0;
+MOV tempVar0, 1;
+TEMP tempVar1;
+SUB tempVar1, 0, tempVar0;
+TEMP tempVar2;
+TEMP tempVar3;
+DP4 tempVar3, fragment.color, {1, 0, 0, 0};
+TEMP tempVar4;
+DP4 tempVar4, fragment.position, {1, 0, 0, 0};
+MUL tempVar2, tempVar3, tempVar4;
+CMP temp.x, tempVar1, tempVar2, temp.x;
+TEMP tempVar5;
+TEMP tempVar6;
+DP4 tempVar6, fragment.color, {0, 1, 0, 0};
+TEMP tempVar7;
+DP4 tempVar7, fragment.position, {0, 1, 0, 0};
+MUL tempVar5, tempVar6, tempVar7;
+CMP temp.y, tempVar1, tempVar5, temp.y;
+CMP temp.z, tempVar1, fragment.color, temp.z;
+TEMP tempVar8;
+TEMP tempVar9;
+DP4 tempVar9, fragment.color, {0, 0, 0, 1};
+TEMP tempVar10;
+DP4 tempVar10, fragment.position, {1, 0, 0, 0};
+MUL tempVar8, tempVar9, tempVar10;
+TEMP tempVar11;
+TEMP tempVar12;
+DP4 tempVar12, fragment.position, {0, 1, 0, 0};
+MUL tempVar11, tempVar8, tempVar12;
+CMP temp.w, tempVar1, tempVar11, temp.w;
+SUB tempVar1, tempVar0, 1;
+CMP temp, tempVar1, fragment.color, temp;
+MOV result.color, temp;
+END
